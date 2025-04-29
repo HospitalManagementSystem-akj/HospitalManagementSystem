@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+            background: url("create a logo with _medtech-a.k._.jpg") no-repeat center center fixed;
+            background-size: cover;
+            height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .sidebar {
+            width: 250px;
+            background-color: grey;
+            height: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            padding-top: 20px;
+            transform: translateX(-100%);
+            transition: transform 0.3s;
+            z-index: 100;
+        }
+
+        .sidebar.show {
+            transform: translateX(0);
+        }
+
+        .sidebar a {
+            display: block;
+            padding: 15px;
+            text-decoration: none;
+            color: white;
+            margin-bottom: 5px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .sidebar a:hover {
+            background-color: darkgrey;
+        }
+
+        .sidebar #logout, .sidebar #help {
+            margin-top: 20px;
+            border-top: 1px solid white;
+            padding-top: 20px;
+        }
+
+        .sidebar .close-sidebar {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        .sidebar .close-sidebar:hover {
+            color: darkgrey;
+        }
+
+        .header {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            padding: 10px 20px;
+            position: fixed;
+            top: 0;
+            left: 3;
+            right: 0;
+            background: transparent;
+            z-index: 11;
+        }
+
+        .header #toggleSidebar {
+            padding: 7.5px 15px;
+            background-color: D9D9D9;
+            color: black;
+            border: 1.5px solid #ccc;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 15px;
+            transition: transform 0.2s, box-shadow 0.2s;
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            z-index: 101;
+        }
+
+        .header #toggleSidebar.hide {
+            display: none;
+        }
+        
+        .container {
+            margin-left: 270px;
+            padding: 20px;
+        }
+
+        .profile-card {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 500px;
+        }
+
+        .profile-card h1, .profile-card h2 {
+            margin-top: 0;
+            color: #333;
+        }
+
+        .profile-card p {
+            margin: 15px 0;
+            position: relative;
+        }
+
+        .edit-link {
+            color: blue;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+        
+        .edit-dropdown {
+            display: none;
+            position: fixed;
+            left: 50%;
+            top: 10%;
+	transform: translate(-50%, -50%);
+            background-color: white;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            padding: 10px;
+            width: 300px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            z-index: 1000;
+        }
+
+        .edit-dropdown input, .edit-dropdown select {
+            width: 80%;
+            padding: 8px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        .edit-dropdown-buttons {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .edit-dropdown-buttons button {
+            padding: 5px 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .save-btn {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        .cancel-btn {
+            background-color: #f44336;
+            color: white;
+        }
+        
+        .password-reset-section {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+
+        .password-reset-section p {
+            margin-bottom: 10px;
+            color: #555;
+        }
+
+        .email-input {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .email-input input {
+            flex: 1;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            margin-right: 10px;
+        }
+
+        .email-input button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 8px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .email-input button:hover {
+            background-color: #45a049;
+        }
+
+        .reset-btn {
+            color: blue;
+            cursor: pointer;
+            background: none;
+            border: none;
+            padding: 0;
+            font: inherit;
+        }
+
+        .logo {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            font-weight: bold;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <button class="menu-button" onclick="toggleSidebar()">☰ Menu</button>
+    
+    <div class="sidebar" id="sidebar">
+        <button class="close-sidebar" onclick="toggleSidebar()">✖</button>
+        <a href="homepage_user.html">HOME</a>
+        <a href="#" class="active">PROFILE</a>
+        <a href="booking_status.html">BOOKING STATUS</a>
+        <a href="feedback.html">FEEDBACK</a>
+        <a id="logout" href="login_page.html">LOGOUT</a>
+        
+    </div>
+
+    <div class="container">
+        <h1>USER ACCOUNT:</h1>
+        <div class="profile-card">
+            <h2>Your Details:</h2>
+            <p><strong>Name:</strong> <span id="name-display">John Doe</span> <span class="edit-link" onclick="showEditDropdown('name')">Edit</span>
+                <div class="edit-dropdown" id="name-dropdown">
+                    <input type="text" id="name-input" value="John Doe">
+                    <div class="edit-dropdown-buttons">
+                        <button class="cancel-btn" onclick="hideEditDropdown('name')">Cancel</button>
+                        <button class="save-btn" onclick="saveField('name')">Save</button>
+                    </div>
+                </div>
+            </p>
+            
+            <p><strong>Gender:</strong> <span id="gender-display">Male</span> <span class="edit-link" onclick="showEditDropdown('gender')">Edit</span>
+                <div class="edit-dropdown" id="gender-dropdown">
+                    <select id="gender-input">
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                        <option value="Other">Other</option>
+                        <option value="Prefer not to say">Prefer not to say</option>
+                    </select>
+                    <div class="edit-dropdown-buttons">
+                        <button class="cancel-btn" onclick="hideEditDropdown('gender')">Cancel</button>
+                        <button class="save-btn" onclick="saveField('gender')">Save</button>
+                    </div>
+                </div>
+            </p>
+            
+            <p><strong>Email:</strong> <span id="email-display">johndoe@example.com</span> <span class="edit-link" onclick="showEditDropdown('email')">Update</span>
+                <div class="edit-dropdown" id="email-dropdown">
+                    <input type="email" id="email-input" value="johndoe@example.com">
+                    <div class="edit-dropdown-buttons">
+                        <button class="cancel-btn" onclick="hideEditDropdown('email')">Cancel</button>
+                        <button class="save-btn" onclick="saveField('email')">Save</button>
+                    </div>
+                </div>
+            </p>
+            
+            <p><strong>Password:</strong> ******** <button class="reset-btn" onclick="showResetSection()">Forgot Password?</button></p>
+            
+            <div class="password-reset-section" id="passwordResetSection" style="display: none;">
+                <p>Password reset link has been sent to your email.</p>
+                <p>Send Password Reset Link</p>
+                <div class="email-input">
+                    <input type="email" value="johndoe@example.com">
+                    <button onclick="sendResetLink()">Update</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="logo">medtech-a.k AK.</div>
+
+    <script>
+        // Toggle sidebar
+        function toggleSidebar() {
+            var sidebar = document.getElementById("sidebar");
+            sidebar.classList.toggle("show");
+        }
+        
+        // Show edit dropdown
+        function showEditDropdown(field) {
+            // Hide all other dropdowns first
+            document.querySelectorAll('.edit-dropdown').forEach(dropdown => {
+                dropdown.style.display = 'none';
+            });
+            
+            // Show the selected dropdown
+            document.getElementById(field + '-dropdown').style.display = 'block';
+            
+            // Set the current value in the input/select
+            if (field === 'gender') {
+                document.getElementById(field + '-input').value = document.getElementById(field + '-display').textContent;
+            } else {
+                document.getElementById(field + '-input').value = document.getElementById(field + '-display').textContent;
+            }
+        }
+        
+        // Hide edit dropdown
+        function hideEditDropdown(field) {
+            document.getElementById(field + '-dropdown').style.display = 'none';
+        }
+        
+        // Save field value
+        function saveField(field) {
+            const newValue = document.getElementById(field + '-input').value;
+            document.getElementById(field + '-display').textContent = newValue;
+            document.getElementById(field + '-dropdown').style.display = 'none';
+            
+            // Here you would typically send the update to your server
+            alert(field.charAt(0).toUpperCase() + field.slice(1) + ' updated successfully!');
+        }
+        
+        // Password reset functionality
+        function showResetSection() {
+            var resetSection = document.getElementById("passwordResetSection");
+            resetSection.style.display = resetSection.style.display === "none" ? "block" : "none";
+        }
+        
+        function sendResetLink() {
+            var email = document.querySelector(".email-input input").value;
+            if (email) {
+                alert("Password reset link has been sent to " + email);
+                // You can add AJAX call here to actually send the reset link
+            } else {
+                alert("Please enter your registered email address");
+            }
+        }
+        
+        // Close dropdowns when clicking outside
+        document.addEventListener('click', function(event) {
+            if (!event.target.classList.contains('edit-link') && 
+                !event.target.closest('.edit-dropdown')) {
+                document.querySelectorAll('.edit-dropdown').forEach(dropdown => {
+                    dropdown.style.display = 'none';
+                });
+            }
+        });
+        
+        // Logout functionality
+document.getElementById('logout').addEventListener('click', function(e) {
+    e.preventDefault(); // Prevent default link behavior
+    alert('You have been logged out.');
+    // Clear any user session data if needed
+    localStorage.removeItem('loggedIn');
+    // Redirect to login page after a brief delay
+    setTimeout(function() {
+        window.location.href = 'login_page.html';
+    }, 500);
+});
+    </script>
+</body>
+</html>

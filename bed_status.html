@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Check Bed Status</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        .dropdown {
+            margin-bottom: 20px;
+        }
+
+        .dropdown label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        .dropdown select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+
+        .search-button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .search-button:hover {
+            background-color: #0056b3;
+        }
+
+        .results {
+            margin-top: 20px;
+        }
+
+        .results h2 {
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .results p {
+            margin: 5px 0;
+            color: #555;
+        }
+
+        .close-button {
+            display: block;
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .close-button:hover {
+            background-color: #c82333;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Check Bed Availability</h1>
+        <div class="dropdown">
+            <label for="hospitalSelect">Select a Hospital:</label>
+            <select id="hospitalSelect">
+                <option value="">-- Select a Hospital --</option>
+                <option value="hospital1">Hospital 1</option>
+                <option value="hospital2">Hospital 2</option>
+                <option value="hospital3">Hospital 3</option>
+            </select>
+        </div>
+        <button class="search-button" id="searchButton">Search</button>
+
+        <div class="results" id="results" style="display: none;">
+            <h2>Hospital Name: <span id="hospitalName"></span></h2>
+            <p>General Beds Available: <span id="generalBeds"></span></p>
+            <p>Emergency Beds Available: <span id="emergencyBeds"></span></p>
+        </div>
+
+        <button class="close-button" id="closeButton">Close</button>
+    </div>
+
+    <script>
+        const hospitalSelect = document.getElementById('hospitalSelect');
+        const searchButton = document.getElementById('searchButton');
+        const resultsDiv = document.getElementById('results');
+        const hospitalNameSpan = document.getElementById('hospitalName');
+        const generalBedsSpan = document.getElementById('generalBeds');
+        const emergencyBedsSpan = document.getElementById('emergencyBeds');
+        const closeButton = document.getElementById('closeButton');
+
+        // Sample data for bed availability
+        const bedData = {
+            hospital1: { name: "AIIMS Mangalagiri", general: 10, emergency: 5 },
+            hospital2: { name: "NRI Hospital", general: 15, emergency: 3 },
+            hospital3: { name: "Manipal", general: 8, emergency: 2 }
+	hospital3: { name: "St. Ann's", general: 18, emergency: 20 }
+        };
+
+        searchButton.addEventListener('click', () => {
+            const selectedHospital = hospitalSelect.value;
+            if (selectedHospital) {
+                const data = bedData[selectedHospital];
+                hospitalNameSpan.textContent = data.name;
+                generalBedsSpan.textContent = data.general;
+                emergencyBedsSpan.textContent = data.emergency;
+                resultsDiv.style.display = 'block';
+            } else {
+                alert('Please select a hospital.');
+            }
+        });
+
+        closeButton.addEventListener('click', () => {
+            resultsDiv.style.display = 'none';
+        });
+    </script>
+</body>
+</html>

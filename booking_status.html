@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking Status</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+            background: url("create a logo with _medtech-a.k._.jpg") no-repeat center center fixed;
+            background-size: cover;
+            height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .sidebar {
+            width: 250px;
+            background-color: grey;
+            height: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            padding-top: 20px;
+            transform: translateX(-100%);
+            transition: transform 0.3s;
+            z-index: 100;
+        }
+
+        .sidebar.show {
+            transform: translateX(0);
+        }
+
+        .sidebar a {
+            display: block;
+            padding: 15px;
+            text-decoration: none;
+            color: white;
+            margin-bottom: 5px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .sidebar a:hover {
+            background-color: darkgrey;
+        }
+
+        .sidebar #logout, .sidebar #help {
+            margin-top: 20px;
+            border-top: 1px solid white;
+            padding-top: 20px;
+        }
+
+        .sidebar .close-sidebar {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        .sidebar .close-sidebar:hover {
+            color: darkgrey;
+        }
+
+        .header {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            padding: 10px 20px;
+            position: fixed;
+            top: 0;
+            left: 3;
+            right: 0;
+            background: transparent;
+            z-index: 11;
+        }
+
+        .header #toggleSidebar {
+            padding: 7.5px 15px;
+            background-color: D9D9D9;
+            color: black;
+            border: 1.5px solid #ccc;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 15px;
+            transition: transform 0.2s, box-shadow 0.2s;
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            z-index: 101;
+        }
+
+        .header #toggleSidebar.hide {
+            display: none;
+        }
+        
+        .container {
+            margin-left: 270px;
+            padding: 20px;
+        }
+
+        .status-card {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 800px;
+        }
+
+        .status-card h1 {
+            margin-top: 0;
+            color: #333;
+        }
+
+        .doctor-name {
+            font-size: 1.2em;
+            margin-bottom: 20px;
+            color: #444;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+
+        tr:hover {
+            background-color: #f5f5f5;
+        }
+
+        .status-in-process {
+            color: #FFA500;
+            font-weight: bold;
+        }
+
+        .status-completed {
+            color: #008000;
+            font-weight: bold;
+        }
+
+        .note {
+            margin-top: 30px;
+            padding: 15px;
+            background-color: #f8f8f8;
+            border-left: 4px solid #4CAF50;
+        }
+
+        .note p {
+            margin: 5px 0;
+            color: #555;
+        }
+
+        .logo {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            font-weight: bold;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <button class="menu-button" onclick="toggleSidebar()">☰ Menu</button>
+    
+    <div class="sidebar" id="sidebar">
+        <button class="close-sidebar" onclick="toggleSidebar()">✖</button>
+        <a href="homepage_user.html">HOME</a>
+        <a href="profile.html">PROFILE</a>
+        <a href="#" class="active">BOOKING STATUS</a>
+        <a href="feedback.html">FEEDBACK</a>
+        <a id="logout" href="login_page.html">LOGOUT</a>
+    </div>
+
+    <div class="container">
+        <div class="status-card">
+            <h1>STATUS/REPORT:</h1>
+            <div class="doctor-name">APPOINTMENT FOR DR. SMITH</div>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>PATIENT NAME</th>
+                        <th>MEDICAL REPORT STATUS</th>
+                        <th>OPD SLIP STATUS</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>John Doe</td>
+                        <td class="status-completed">COMPLETED</td>
+                        <td class="status-in-process">IN PROCESS</td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>Jane Smith</td>
+                        <td class="status-in-process">IN PROCESS</td>
+                        <td class="status-completed">COMPLETED (SLIP #45678)</td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>Robert Johnson</td>
+                        <td class="status-completed">COMPLETED</td>
+                        <td class="status-completed">COMPLETED (SLIP #45679)</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <div class="note">
+                <p><strong>NOTE:</strong></p>
+                <p>IN PROCESS: INDICATES THAT THE REPORT OR OPD SLIP IS STILL BEING PROCESSED AND IS NOT YET COMPLETE.</p>
+                <p>COMPLETED: INDICATES THAT THE REPORT OR OPD SLIP HAS BEEN FINALIZED. FOR OPD SLIPS, THE COMPLETED SLIP NUMBER IS SHOWN.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="logo">medtech-a.k AK.</div>
+
+    <script>
+        function toggleSidebar() {
+            var sidebar = document.getElementById("sidebar");
+            sidebar.classList.toggle("show");
+        }
+        
+        // Logout functionality
+document.getElementById('logout').addEventListener('click', function(e) {
+    e.preventDefault(); // Prevent default link behavior
+    alert('You have been logged out.');
+    // Clear any user session data if needed
+    localStorage.removeItem('loggedIn');
+    // Redirect to login page after a brief delay
+    setTimeout(function() {
+        window.location.href = 'login_page.html';
+    }, 500);
+});
+    </script>
+</body>
+</html>

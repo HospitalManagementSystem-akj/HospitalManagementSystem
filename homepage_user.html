@@ -1,0 +1,1265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Page</title>
+    <style>
+    body {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+            background: url("create a logo with _medtech-a.k._.jpg") no-repeat center center fixed;
+            background-size: cover;
+            height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .sidebar {
+            width: 250px;
+            background-color: grey;
+            height: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            padding-top: 20px;
+            transform: translateX(-100%);
+            transition: transform 0.3s;
+            z-index: 100; /* Ensure sidebar is above other content */
+        }
+
+        .sidebar.show {
+            transform: translateX(0);
+        }
+
+        .sidebar a {
+            display: block;
+            padding: 15px;
+            text-decoration: none;
+            color: white;
+            margin-bottom: 5px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .sidebar a:hover {
+            background-color: darkgrey;
+        }
+
+        .sidebar #logout {
+            margin-top: 20px; /* Add space above the logout link */
+            border-top: 1px solid white; /* Add a separator line */
+            padding-top: 20px; /* Add padding above the logout link */
+        }
+
+        .sidebar .close-sidebar {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        .sidebar .close-sidebar:hover {
+            color: darkgrey;
+        }
+
+        .main-content {
+            padding: 20px;
+            padding-top: 80px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: calc(100vh - 60px);
+            transition: margin-left 0.3s;
+        }
+
+        .tile-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 40px;
+            max-width: 1200px;
+            margin: auto;
+        }
+
+        .tile {
+            background-color: lightgrey;
+            width: 250px;
+            height: 200px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .tile img {
+            width: 70px;
+            height: 70px;
+            margin-bottom: 15px;
+        }
+
+        .tile button {
+            background-color: blue;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 10px;
+        }
+
+        .tile button:hover {
+            background-color: darkblue;
+        }
+
+        .header {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            padding: 10px 20px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: transparent;
+            z-index: 11;
+        }
+
+        .header #toggleSidebar {
+            padding: 7.5px 15px;
+            background-color: D9D9D9;
+            color: black;
+            border: 1.5px solid #ccc;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 15px;
+            transition: transform 0.2s, box-shadow 0.2s;
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            z-index: 101; /* Ensure button is above sidebar */
+        }
+
+        .header #toggleSidebar.hide {
+            display: none; /* Hide the button when sidebar is open */
+        }
+
+        .header .right-section {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .dropdown {
+            margin-bottom: 20px;
+        }
+
+        .dropdown label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        .dropdown select {
+            width: 300px; /* Standardized width */
+            height: 40px; /* Standardized height */
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+
+        .search-button {
+            display: block;
+            width: 75%;
+            padding: 5px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+	bottom: 10px
+        }
+
+        .search-button:hover {
+            background-color: #0056b3;
+        }
+
+        .search-container {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .search-container input {
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .search-container button {
+            padding: 5px 10px;
+            background-color: D9D9D9;
+            color: black;
+            border: 1.5px solid #ccc;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .search-container button:hover {
+            background-color: white;
+        }
+
+        .results {
+            margin-top: 20px;
+        }
+
+        .results h2 {
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .results p {
+            margin: 5px 0;
+            color: #555;
+        }
+
+        .close-button {
+            display: block;
+            padding: 10px;
+            background-color: black;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+            position: absolute; /* Position the button absolutely */
+            bottom: 15px; /* Distance from the bottom */
+            right: 10px; /* Distance from the right */
+        }
+
+        .close-button:hover {
+            background-color: #c82333;
+        }
+
+        .contact-us-btn {
+            padding: 5px 10px;
+            background-color: D9D9D9;
+            color: black;
+            border: 1.5px solid #ccc;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .contact-us-btn:hover {
+            background-color: grey;
+        }
+
+        .help-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            background-color: black;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            z-index: 10;
+        }
+
+        .help-btn:hover {
+            background-color: grey;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 1%;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+        }
+
+        .modal.show {
+            display: block;
+        }
+
+        .modal .close-button {
+            margin-top: 10px;
+        }
+
+        .modal .message {
+            text-align: center;
+            font-size: 18px;
+            margin-bottom: 20px;
+        }
+
+        .modal .ok-button {
+            display: block;
+            margin: 0 auto;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .modal .ok-button:hover {
+            background-color: #0056b3;
+        }
+.blood-modal {
+            display: none;
+            position: fixed;
+            top: 1%;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            width: 400px;
+        }
+
+        .blood-modal.show {
+            display: block;
+        }
+
+        .blood-modal .dropdown {
+            margin-bottom: 20px;
+        }
+
+        .blood-modal .dropdown label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        .blood-modal .dropdown select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+
+        .blood-modal .buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 15px;
+        }
+
+        .blood-modal .search-button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .blood-modal .search-button:hover {
+            background-color: #0056b3;
+        }
+
+        .blood-modal .close-button {
+            padding: 10px 20px;
+            background-color: black;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .blood-modal .close-button:hover {
+            background-color: #c82333;
+        }
+
+        .blood-modal .results {
+            margin-top: 20px;
+        }
+
+        .blood-modal .results h2 {
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .blood-modal .results p {
+            margin: 5px 0;
+            color: #555;
+        }
+
+
+        /* Modal for Appointment Booking */
+        .appointment-modal {
+            display: none;
+            position: fixed;
+            top: 0.5%;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            width: 450px;
+        }
+
+        .appointment-modal.show {
+            display: block;
+        }
+
+        .appointment-modal .dropdown {
+            margin-bottom: 20px;
+        }
+
+        .appointment-modal .dropdown label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: bold;
+        }
+
+        .appointment-modal .dropdown input,
+        .appointment-modal .dropdown select {
+            width: 80%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 13.5px;
+        }
+
+        .appointment-modal .buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 15px;
+        }
+
+        .appointment-modal .search-button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .appointment-modal .search-button:hover {
+            background-color: #0056b3;
+        }
+
+        .appointment-modal .close-button {
+            padding: 10px 20px;
+            background-color: black;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .appointment-modal .close-button:hover {
+            background-color: #c82333;
+        }
+
+
+        /* Modal for NICU Services */
+        .nicu-modal {
+            display: none;
+            position: fixed;
+            top: 1%;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            width: 400px;
+        }
+
+        .nicu-modal.show {
+            display: block;
+        }
+
+        .nicu-modal .dropdown {
+            margin-bottom: 20px;
+        }
+
+        .nicu-modal .dropdown label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        .nicu-modal .dropdown select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+
+        .nicu-modal .hospital-list {
+            margin-top: 20px;
+        }
+
+        .nicu-modal .hospital-list h3 {
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .nicu-modal .hospital-list p {
+            margin: 5px 0;
+            color: #555;
+        }
+
+        .nicu-modal .buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 15px;
+        }
+
+        .nicu-modal .search-button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .nicu-modal .search-button:hover {
+            background-color: #0056b3;
+        }
+
+        .nicu-modal .close-button {
+            padding: 10px 20px;
+            background-color: black;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+		bottom=15px;
+        }
+
+        .nicu-modal .close-button:hover {
+            background-color: #c82333;
+        }
+
+        .nicu-modal .modal-close {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: none;
+            border: none;
+            color: black;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        .nicu-modal .modal-close:hover {
+            color: #c82333;
+        }
+ /* Modal for Request OPD Slip */
+        .opd-modal {
+            display: none;
+            position: fixed;
+            top: 5%;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            width: 400px;
+        }
+
+        .opd-modal.show {
+            display: block;
+        }
+
+        .opd-modal .dropdown {
+            margin-bottom: 20px;
+        }
+
+        .opd-modal .dropdown label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        .opd-modal .dropdown select,
+        .opd-modal .dropdown textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+
+        .opd-modal .buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 15px;
+        }
+
+        .opd-modal .search-button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .opd-modal .search-button:hover {
+            background-color: #0056b3;
+        }
+
+        .opd-modal .close-button {
+            padding: 10px 20px;
+            background-color: black;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .opd-modal .close-button:hover {
+            background-color: #c82333;
+        }
+/* Contact Modal Styles */
+.contact-modal {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    width: 350px;
+}
+
+.contact-info {
+    margin: 20px 0;
+}
+
+.contact-info p {
+    margin: 15px 0;
+    color: #555;
+}
+
+.overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.5);
+    z-index: 999;
+}
+    </style>
+</head>
+<body>
+    <div class="header">
+        <button id="toggleSidebar">☰ Menu</button>
+        <div class="right-section">
+            <div class="search-container">
+                <input type="text" placeholder="Search...">
+                <button>Search</button>
+            </div>
+            <button class="contact-us-btn">Contact Us</button>
+        </div>
+    </div>
+
+    <div class="sidebar" id="sidebar">
+        <button class="close-sidebar" id="closeSidebar">×</button>
+        <a href="#">HOME</a>
+        <a href="profile.html">PROFILE</a>
+        <a href="booking_status.html">BOOKING STATUS</a>
+        <a href="feedback.html">FEEDBACK</a>
+        <a id="logout" href="#">LOGOUT</a>
+    </div>
+
+    <div class="main-content" id="mainContent">
+        <div class="tile-container">
+            <div class="tile">
+                <img src="C:/Users/avish/OneDrive/Desktop/MedTech-A.K/hospital_beds.jpeg" alt="Bed Status">
+                <button id="checkBedStatus">Check Bed-Status</button>
+            </div>
+
+            <div class="tile">
+                <img src="C:/Users/avish/OneDrive/Desktop/MedTech-A.K/ambulance.jpeg" alt="Ambulance">
+                <button id="callAmbulance">Call Ambulance</button>
+            </div>
+
+            <div class="tile">
+                <img src="C:/Users/avish/OneDrive/Desktop/MedTech-A.K/blood-availability.jpeg" alt="Blood Availability">
+                <button id="checkBloodAvailability">Check Blood Availability</button>
+            </div>
+
+            <div class="tile">
+                <img src="C:/Users/avish/OneDrive/Desktop/MedTech-A.K/appointment.webp" alt="Appointment">
+                <button id="bookAppointment">Book Appointment</button>
+            </div>
+
+            <div class="tile">
+                <img src="C:/Users/avish/OneDrive/Desktop/MedTech-A.K/nicu.jpg" alt="NICU">
+                <button id="checkNICU">Check NICU Services</button>
+            </div>
+
+            <div class="tile">
+                <img src="C:/Users/avish/OneDrive/Desktop/MedTech-A.K/opd.jpeg" alt="OPD Request">
+                <button id="requestOPD">Request OPD</button>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Modals -->
+<div class="opd-modal" id="opdModal">
+        <div class="container">
+            <h1>Request OPD Slip</h1>
+            <div class="dropdown">
+                <label for="hospitalSelectOPD">Select Hospital:</label>
+                <select id="hospitalSelectOPD">
+                    <option value="">-- Select a Hospital --</option>
+                    <option value="AIIMS Mangalagiri">AIIMS Mangalagiri</option>
+                    <option value="NRI Hospital, Guntur">NRI Hospital, Guntur</option>
+                    <option value="Manipal Hospitals, Vijayawada">Manipal Hospitals, Vijayawada</option>
+                    <option value="Apollo Hospitals, Visakhapatnam">Apollo Hospitals, Visakhapatnam</option>
+                    <option value="KIMS Hospitals, Secunderabad">KIMS Hospitals, Secunderabad</option>
+                    <option value="Rainbow Children's Hospital, Vijayawada">Rainbow Children's Hospital, Vijayawada</option>
+                </select>
+            </div>
+            <div class="dropdown">
+                <label for="issueDescription">Describe Your Issue:</label>
+                <textarea id="issueDescription" rows="4" placeholder="Describe your issue here..."></textarea>
+            </div>
+            <button class="search-button" id="submitOPDRequest">Submit</button>
+            <button class="close-button" id="closeOPDModal">Close</button>
+        </div>
+    </div>
+
+    <div class="nicu-modal" id="nicuModal">
+        <button class="modal-close" id="nicuModalClose">×</button>
+        <div class="container">
+            <h1>Find NICU Services</h1>
+            <div class="dropdown">
+                <label for="stateSelect">Select State:</label>
+                <select id="stateSelect">
+                    <option value="">Select Your State</option>
+                    <option value="Andhra Pradesh">Andhra Pradesh</option>
+                    <option value="Telangana">Telangana</option>
+                </select>
+            </div>
+            <div class="hospital-list" id="hospitalList">
+                <h3>Hospitals with NICU Services:</h3>
+                <div id="hospitalDetails"></div>
+            </div>
+            <div class="buttons">
+                <button class="search-button" id="checkNICUAvalability">Check NICU Availability</button>
+            </div>
+            <button class="close-button" id="closeNICUModal">Close</button>
+        </div>
+    </div>
+
+    <!-- Modal for Bed Status -->
+    <div class="modal" id="bedStatusModal">
+        <div class="container">
+            <h1>Check Bed Availability</h1>
+            <div class="dropdown">
+                <label for="hospitalSelect">Select a Hospital:</label>
+                <select id="hospitalSelect">
+                    <option value="">-- Select a Hospital --</option>
+                    <option value="AIIMS Mangalagiri">AIIMS Mangalagiri</option>
+                    <option value="NRI Hospital, Guntur">NRI Hospital, Guntur</option>
+                    <option value="Manipal Hospitals, Vijayawada">Manipal Hospitals, Vijayawada</option>
+                    <option value="Apollo Hospitals, Visakhapatnam">Apollo Hospitals, Visakhapatnam</option>
+                    <option value="KIMS Hospitals, Secunderabad">KIMS Hospitals, Secunderabad</option>
+                    <option value="Rainbow Children's Hospital, Vijayawada">Rainbow Children's Hospital, Vijayawada</option>
+                </select>
+            </div>
+            <button class="search-button" id="searchButton">Search</button>
+
+            <div class="results" id="results" style="display: none;">
+                <h2>Hospital Name: <span id="hospitalName"></span></h2>
+                <p>General Beds Available: <span id="generalBeds"></span></p>
+                <p>Emergency Beds Available: <span id="emergencyBeds"></span></p>
+            </div>
+
+            <button class="close-button" id="closeBedModalButton">Close</button>
+        </div>
+    </div>
+
+    <!-- Modal for Call Ambulance -->
+    <div class="modal" id="callAmbulanceModal">
+        <div class="container">
+            <h1>Call for Ambulance</h1>
+            <div class="dropdown">
+                <label for="hospitalSelectAmbulance">Select a Hospital:</label>
+                <select id="hospitalSelectAmbulance">
+                    <option value="">-- Select a Hospital --</option>
+                    <option value="AIIMS Mangalagiri">AIIMS Mangalagiri</option>
+                    <option value="NRI Hospital, Guntur">NRI Hospital, Guntur</option>
+                    <option value="Manipal Hospitals, Vijayawada">Manipal Hospitals, Vijayawada</option>
+                    <option value="Apollo Hospitals, Visakhapatnam">Apollo Hospitals, Visakhapatnam</option>
+                    <option value="KIMS Hospitals, Secunderabad">KIMS Hospitals, Secunderabad</option>
+                    <option value="Rainbow Children's Hospital, Vijayawada">Rainbow Children's Hospital, Vijayawada</option>
+                </select>
+            </div>
+            <button class="search-button" id="requestAmbulanceButton">Request for Ambulance</button>
+
+            <div class="results" id="ambulanceResults" style="display: none;">
+                <h2>Hospital Name: <span id="ambulanceHospitalName"></span></h2>
+                <p>Phone No.: <span id="hospitalPhone"></span></p>
+                <div class="message">Your location has been sent, ambulance will be arriving soon.</div>
+                <button class="ok-button" id="okButton">OK</button>
+            </div>
+
+            <button class="close-button" id="closeAmbulanceModalButton">Close</button>
+        </div>
+    </div>
+
+    <!-- Modal for Blood Availability -->
+    <div class="blood-modal" id="bloodAvailabilityModal">
+        <div class="container">
+            <h1>Search Blood Availability</h1>
+            <div class="dropdown">
+                <label for="bloodGroupSelect">Select Blood Group:</label>
+                <select id="bloodGroupSelect">
+                    <option value="">-- Select Your Blood Group --</option>
+                    <option value="A+">A+</option>
+                    <option value="A-">A-</option>
+                    <option value="B+">B+</option>
+                    <option value="B-">B-</option>
+                    <option value="O+">O+</option>
+                    <option value="O-">O-</option>
+                    <option value="AB+">AB+</option>
+                    <option value="AB-">AB-</option>
+                </select>
+            </div>
+            <button class="search-button" id="searchBloodButton">Search</button>
+
+            <div class="results" id="bloodResults" style="display: none;">
+                <h2>Blood Available In:</h2>
+                <p>Hospital Name: <span id="bloodHospitalName"></span></p>
+                <p>Hospital Address: <span id="bloodHospitalAddress"></span></p>
+                <p>Phone No.: <span id="bloodHospitalPhone"></span></p>
+            </div>
+
+            <button class="close-button" id="closeBloodModalButton">Close</button>
+        </div>
+    </div>
+
+    <!-- Modal for Appointment Booking -->
+    <div class="appointment-modal" id="appointmentModal">
+        <div class="container">
+            <h1>Book Appointment</h1>
+            <div class="dropdown">
+                <label for="name">Name:</label>
+                <input type="text" id="name" placeholder="Enter your name">
+            </div>
+            <div class="dropdown">
+                <label for="email">Email Address:</label>
+                <input type="email" id="email" placeholder="Enter your email">
+            </div>
+            <div class="dropdown">
+                <label for="phone">Phone Number:</label>
+                <input type="tel" id="phone" placeholder="Enter your phone number">
+            </div>
+            <div class="dropdown">
+                <label for="dateOfVisit">Date of Visit:</label>
+                <input type="date" id="dateOfVisit">
+            </div>
+            <div class="dropdown">
+                <label for="dateOfAppointment">Date of Appointment:</label>
+                <input type="date" id="dateOfAppointment">
+            </div>
+            <div class="dropdown">
+                <label for="reason">Reason of Visit:</label>
+                <select id="reason">
+                    <option value="">Select Option</option>
+                    <option value="consultation">Consultation</option>
+                    <option value="follow-up">Follow-up</option>
+                    <option value="emergency">Emergency</option>
+                </select>
+            </div>
+            <div class="dropdown">
+                <label for="preferredTime">Preferred Time:</label>
+                <input type="time" id="preferredTime">
+            </div>
+            <div class="dropdown">
+                <label for="comments">Comments:</label>
+                <textarea id="comments" placeholder="Enter any additional comments"></textarea>
+            </div>
+            <button class="search-button" id="submitAppointment">Submit</button>
+            <button class="close-button" id="closeAppointmentModal">Close</button>
+        </div>
+    </div>
+<!-- Contact Us Modal -->
+<div class="contact-modal" id="contactModal">
+    <div class="container">
+        <h1>CONTACT US</h1>
+        <div class="contact-info">
+            <p><strong>Email Address:</strong> medtechak@gmail.com</p>
+            <p><strong>Contact No.:</strong> **********</p>
+            <p><strong>Admin's Email Address:</strong> adminmedtechak@gmail.com</p>
+        </div>
+        <button class="close-button" id="closeContactModal">Close</button>
+    </div>
+</div>
+<div class="overlay" id="contactOverlay"></div>
+   <script>
+    const sidebar = document.getElementById('sidebar');
+    const toggleSidebar = document.getElementById('toggleSidebar');
+    const closeSidebar = document.getElementById('closeSidebar');
+    const logoutLink = document.getElementById('logout');
+    const sidebarLinks = document.querySelectorAll('.sidebar a');
+    const checkBedStatusButton = document.getElementById('checkBedStatus');
+    const bedStatusModal = document.getElementById('bedStatusModal');
+    const closeBedModalButton = document.getElementById('closeBedModalButton');
+    const callAmbulanceButton = document.getElementById('callAmbulance');
+    const callAmbulanceModal = document.getElementById('callAmbulanceModal');
+    const closeAmbulanceModalButton = document.getElementById('closeAmbulanceModalButton');
+    const hospitalSelect = document.getElementById('hospitalSelect');
+    const searchButton = document.getElementById('searchButton');
+    const resultsDiv = document.getElementById('results');
+    const hospitalNameSpan = document.getElementById('hospitalName');
+    const generalBedsSpan = document.getElementById('generalBeds');
+    const emergencyBedsSpan = document.getElementById('emergencyBeds');
+    const hospitalSelectAmbulance = document.getElementById('hospitalSelectAmbulance');
+    const requestAmbulanceButton = document.getElementById('requestAmbulanceButton');
+    const ambulanceResultsDiv = document.getElementById('ambulanceResults');
+    const ambulanceHospitalNameSpan = document.getElementById('ambulanceHospitalName');
+    const hospitalPhoneSpan = document.getElementById('hospitalPhone');
+    const okButton = document.getElementById('okButton');
+    const checkBloodAvailabilityButton = document.getElementById('checkBloodAvailability');
+    const bloodAvailabilityModal = document.getElementById('bloodAvailabilityModal');
+    const closeBloodModalButton = document.getElementById('closeBloodModalButton');
+    const bloodGroupSelect = document.getElementById('bloodGroupSelect');
+    const searchBloodButton = document.getElementById('searchBloodButton');
+    const bloodResultsDiv = document.getElementById('bloodResults');
+    const bloodHospitalNameSpan = document.getElementById('bloodHospitalName');
+    const bloodHospitalAddressSpan = document.getElementById('bloodHospitalAddress');
+    const bloodHospitalPhoneSpan = document.getElementById('bloodHospitalPhone');
+    const bookAppointmentButton = document.getElementById('bookAppointment');
+    const appointmentModal = document.getElementById('appointmentModal');
+    const closeAppointmentModalButton = document.getElementById('closeAppointmentModal');
+    const submitAppointmentButton = document.getElementById('submitAppointment');
+    const checkNICUButton = document.getElementById('checkNICU');
+    const nicuModal = document.getElementById('nicuModal');
+    const nicuModalClose = document.getElementById('nicuModalClose');
+    const closeNICUModalButton = document.getElementById('closeNICUModal');
+    const stateSelect = document.getElementById('stateSelect');
+    const hospitalDetails = document.getElementById('hospitalDetails');
+    const checkNICUAvalabilityButton = document.getElementById('checkNICUAvalability');
+    const requestOPDButton = document.getElementById('requestOPD');
+    const opdModal = document.getElementById('opdModal');
+    const closeOPDModalButton = document.getElementById('closeOPDModal');
+    const submitOPDRequestButton = document.getElementById('submitOPDRequest');
+    const hospitalSelectOPD = document.getElementById('hospitalSelectOPD');
+    const issueDescription = document.getElementById('issueDescription');
+// Contact Us functionality
+const contactUsBtn = document.querySelector('.contact-us-btn');
+const contactModal = document.getElementById('contactModal');
+const contactOverlay = document.getElementById('contactOverlay');
+const closeContactModalBtn = document.getElementById('closeContactModal');
+
+contactUsBtn.addEventListener('click', () => {
+    contactModal.style.display = 'block';
+    contactOverlay.style.display = 'block';
+});
+
+closeContactModalBtn.addEventListener('click', () => {
+    contactModal.style.display = 'none';
+    contactOverlay.style.display = 'none';
+});
+
+contactOverlay.addEventListener('click', () => {
+    contactModal.style.display = 'none';
+    contactOverlay.style.display = 'none';
+});
+
+// Close with Escape key
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && contactModal.style.display === 'block') {
+        contactModal.style.display = 'none';
+        contactOverlay.style.display = 'none';
+    }
+});
+    // Dummy Data for Andhra Pradesh
+    const bedData = {
+        "AIIMS Mangalagiri": { name: "AIIMS Mangalagiri", general: 12, emergency: 6 },
+        "NRI Hospital, Guntur": { name: "NRI Hospital, Guntur", general: 20, emergency: 8 },
+        "Manipal Hospitals, Vijayawada": { name: "Manipal Hospitals, Vijayawada", general: 15, emergency: 5 },
+        "Apollo Hospitals, Visakhapatnam": { name: "Apollo Hospitals, Visakhapatnam", general: 25, emergency: 10 },
+        "KIMS Hospitals, Secunderabad": { name: "KIMS Hospitals, Secunderabad", general: 18, emergency: 7 },
+        "Rainbow Children's Hospital, Vijayawada": { name: "Rainbow Children's Hospital, Vijayawada", general: 10, emergency: 4 }
+    };
+
+    const ambulanceData = {
+        "AIIMS Mangalagiri": { name: "AIIMS Mangalagiri", phone: "0863-2345678" },
+        "NRI Hospital, Guntur": { name: "NRI Hospital, Guntur", phone: "0863-3456789" },
+        "Manipal Hospitals, Vijayawada": { name: "Manipal Hospitals, Vijayawada", phone: "0866-4567890" },
+        "Apollo Hospitals, Visakhapatnam": { name: "Apollo Hospitals, Visakhapatnam", phone: "0891-5678901" },
+        "KIMS Hospitals, Secunderabad": { name: "KIMS Hospitals, Secunderabad", phone: "040-6789012" },
+        "Rainbow Children's Hospital, Vijayawada": { name: "Rainbow Children's Hospital, Vijayawada", phone: "0866-7890123" }
+    };
+
+    const bloodData = {
+        "A+": { name: "AIIMS Mangalagiri", address: "Mangalagiri, Guntur District", phone: "0863-2345678" },
+        "A-": { name: "NRI Hospital, Guntur", address: "Chinakakani, Guntur District", phone: "0863-3456789" },
+        "B+": { name: "Manipal Hospitals, Vijayawada", address: "Vijayawada, Krishna District", phone: "0866-4567890" },
+        "B-": { name: "Apollo Hospitals, Visakhapatnam", address: "Visakhapatnam", phone: "0891-5678901" },
+        "O+": { name: "KIMS Hospitals, Secunderabad", address: "Secunderabad, Telangana", phone: "040-6789012" },
+        "O-": { name: "Rainbow Children's Hospital, Vijayawada", address: "Vijayawada, Krishna District", phone: "0866-7890123" },
+        "AB+": { name: "Government General Hospital, Guntur", address: "Guntur", phone: "0863-8901234" },
+        "AB-": { name: "Government General Hospital, Visakhapatnam", address: "Visakhapatnam", phone: "0891-9012345" }
+    };
+
+    const nicuData = {
+        "Andhra Pradesh": [
+            { name: "AIIMS Mangalagiri", address: "Mangalagiri, Guntur District", phone: "0863-2345678" },
+            { name: "NRI Hospital, Guntur", address: "Chinakakani, Guntur District", phone: "0863-3456789" },
+            { name: "Manipal Hospitals, Vijayawada", address: "Vijayawada, Krishna District", phone: "0866-4567890" },
+            { name: "Apollo Hospitals, Visakhapatnam", address: "Visakhapatnam", phone: "0891-5678901" },
+            { name: "Rainbow Children's Hospital, Vijayawada", address: "Vijayawada, Krishna District", phone: "0866-7890123" }
+        ],
+        "Telangana": [
+            { name: "KIMS Hospitals, Secunderabad", address: "Secunderabad, Telangana", phone: "040-6789012" }
+        ]
+    };
+
+    // Event listeners
+    toggleSidebar.addEventListener('click', () => {
+        sidebar.classList.toggle('show');
+        toggleSidebar.classList.toggle('hide');
+    });
+
+    closeSidebar.addEventListener('click', () => {
+        sidebar.classList.remove('show');
+        toggleSidebar.classList.remove('hide');
+    });
+
+    sidebarLinks.forEach(link => {
+        link.addEventListener('click', () => {
+            sidebar.classList.remove('show');
+            toggleSidebar.classList.remove('hide');
+        });
+    });
+
+    logoutLink.addEventListener('click', () => {
+        alert('You have been logged out.');
+        localStorage.removeItem('loggedIn');
+        window.location.href = 'login_page.html';
+    });
+
+    checkBedStatusButton.addEventListener('click', () => {
+        bedStatusModal.classList.add('show');
+    });
+
+    closeBedModalButton.addEventListener('click', () => {
+        bedStatusModal.classList.remove('show');
+    });
+
+    callAmbulanceButton.addEventListener('click', () => {
+        callAmbulanceModal.classList.add('show');
+    });
+
+    closeAmbulanceModalButton.addEventListener('click', () => {
+        callAmbulanceModal.classList.remove('show');
+    });
+
+    checkBloodAvailabilityButton.addEventListener('click', () => {
+        bloodAvailabilityModal.classList.add('show');
+    });
+
+    closeBloodModalButton.addEventListener('click', () => {
+        bloodAvailabilityModal.classList.remove('show');
+    });
+
+    bookAppointmentButton.addEventListener('click', () => {
+        appointmentModal.classList.add('show');
+    });
+
+    closeAppointmentModalButton.addEventListener('click', () => {
+        appointmentModal.classList.remove('show');
+    });
+
+    submitAppointmentButton.addEventListener('click', () => {
+    const name = document.getElementById('name').value;
+    const email = document.getElementById('email').value;
+    const phone = document.getElementById('phone').value;
+    const dateOfVisit = document.getElementById('dateOfVisit').value;
+    const dateOfAppointment = document.getElementById('dateOfAppointment').value;
+    const reason = document.getElementById('reason').value;
+    const preferredTime = document.getElementById('preferredTime').value;
+    const comments = document.getElementById('comments').value;
+
+    if (name && email && phone && dateOfVisit && dateOfAppointment && reason && preferredTime) {
+        alert('Appointment booked successfully! You can check your booking status in the "Booking Status" section.');
+        appointmentModal.classList.remove('show');
+        // Store the appointment data (you would typically send this to a server)
+        localStorage.setItem('lastAppointment', JSON.stringify({
+            name, email, phone, dateOfVisit, dateOfAppointment, reason, preferredTime, comments
+        }));
+    } else {
+        alert('Please fill in all required fields.');
+    }
+});
+
+    searchButton.addEventListener('click', () => {
+        const selectedHospital = hospitalSelect.value;
+        if (selectedHospital) {
+            const data = bedData[selectedHospital];
+            hospitalNameSpan.textContent = data.name;
+            generalBedsSpan.textContent = data.general;
+            emergencyBedsSpan.textContent = data.emergency;
+            resultsDiv.style.display = 'block';
+        } else {
+            alert('Please select a hospital.');
+        }
+    });
+
+    requestAmbulanceButton.addEventListener('click', () => {
+        const selectedHospital = hospitalSelectAmbulance.value;
+        if (selectedHospital) {
+            const data = ambulanceData[selectedHospital];
+            ambulanceHospitalNameSpan.textContent = data.name;
+            hospitalPhoneSpan.textContent = data.phone;
+            ambulanceResultsDiv.style.display = 'block';
+        } else {
+            alert('Please select a hospital.');
+        }
+    });
+
+    searchBloodButton.addEventListener('click', () => {
+        const selectedBloodGroup = bloodGroupSelect.value;
+        if (selectedBloodGroup) {
+            const data = bloodData[selectedBloodGroup];
+            bloodHospitalNameSpan.textContent = data.name;
+            bloodHospitalAddressSpan.textContent = data.address;
+            bloodHospitalPhoneSpan.textContent = data.phone;
+            bloodResultsDiv.style.display = 'block';
+        } else {
+            alert('Please select a blood group.');
+        }
+    });
+
+    okButton.addEventListener('click', () => {
+        callAmbulanceModal.classList.remove('show');
+    });
+
+    checkNICUButton.addEventListener('click', () => {
+        nicuModal.classList.add('show');
+    });
+
+    nicuModalClose.addEventListener('click', () => {
+        nicuModal.classList.remove('show');
+    });
+
+    closeNICUModalButton.addEventListener('click', () => {
+        nicuModal.classList.remove('show');
+    });
+
+    stateSelect.addEventListener('change', () => {
+        const selectedState = stateSelect.value;
+        if (selectedState) {
+            const hospitals = nicuData[selectedState];
+            let hospitalHTML = '';
+            hospitals.forEach(hospital => {
+                const googleMapsLink = generateGoogleMapsLink(hospital.address);
+                hospitalHTML += `
+                    <div>
+                        <h4>${hospital.name}</h4>
+                        <p>Address: ${hospital.address}</p>
+                        <p>Contact No: ${hospital.phone}</p>
+                        <a href="${googleMapsLink}" target="_blank">View on Google Map</a>
+                    </div>
+                `;
+            });
+            hospitalDetails.innerHTML = hospitalHTML;
+        } else {
+            hospitalDetails.innerHTML = '';
+        }
+    });
+
+    checkNICUAvalabilityButton.addEventListener('click', () => {
+        alert('Checking NICU availability...');
+    });
+
+    function generateGoogleMapsLink(address) {
+        const encodedAddress = encodeURIComponent(address);
+        return `https://www.google.com/maps/search/?api=1&query=${encodedAddress}`;
+    }
+
+    // Event listener for Request OPD button
+    requestOPDButton.addEventListener('click', () => {
+        opdModal.classList.add('show');
+    });
+
+    // Event listener for Close OPD modal button
+    closeOPDModalButton.addEventListener('click', () => {
+        opdModal.classList.remove('show');
+    });
+
+    // Event listener for Submit OPD Request button
+    submitOPDRequestButton.addEventListener('click', () => {
+        const selectedHospital = hospitalSelectOPD.value;
+        const issue = issueDescription.value;
+
+        if (selectedHospital && issue) {
+            alert('OPD request submitted successfully!');
+            opdModal.classList.remove('show');
+        } else {
+            alert('Please select a hospital and describe your issue.');
+        }
+    });
+
+    // Close modals when clicking outside
+    window.addEventListener('click', (event) => {
+        if (event.target.classList.contains('modal')) {
+            event.target.classList.remove('show');
+        }
+    });
+
+    // Close modals with Escape key
+    document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape') {
+            document.querySelectorAll('.modal.show').forEach(modal => {
+                modal.classList.remove('show');
+            });
+        }
+    });
+</script>
+</body>
+</html>
